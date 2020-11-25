@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"github.com/joho/godotenv"
-	"go-postgres/go-postgres/models"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -47,6 +46,7 @@ func creatConnection() *sql.DB {
 	return db
 }
 
+// CreateUser create a user in database
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
 	w.Header.Set("Access-Control-Allow-Origin", "*")
@@ -65,13 +65,13 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	res := response {
 		ID: insertID,
-		Message: "User created successfully"
+		Message: "User created successfully",
 	}
 
 	json.NewEncoder(w).Encode(res)
 }
 
-
+// GetUser will return a single user by id
 func GetUser(w http.ResponseWriter,  r *http.Request) {
 	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
 	w.Header.Set("Access-Control-Allow-Origin", "*")
@@ -92,6 +92,7 @@ func GetUser(w http.ResponseWriter,  r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+// GetAllUsers returns all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -105,6 +106,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
+// UpdateUser update user's detail in database
 func UpdateUser(w http.ResponseWriter, r *http.Request) {	
 	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
 	w.Header.Set("Access-Control-Allow-Origin", "*")
@@ -140,6 +142,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// DeleteUser delete user from the database
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
 	w.Header.Set("Access-Control-Allow-Origin", "*")
@@ -277,7 +280,7 @@ func deleteUser(id int64) int64 {
 	 res, err := db.Exec(sqlQuery, id)
 
 	 if err != nil {
-		 log.fatalf("unable to execute query. %v", err)
+		 log.Fatalf("unable to execute query. %v", err)
 
 	 }
 

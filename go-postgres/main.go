@@ -1,9 +1,8 @@
 package main
 
 import (
-	"go-postgres/go-postgres/router"
-	"fmt"
 	"go-postgres/router"
+	"fmt"
 	"log"
 	"net/http"
 )
