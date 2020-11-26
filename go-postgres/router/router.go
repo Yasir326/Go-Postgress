@@ -1,7 +1,7 @@
 package router
 
 import (
-	"go-postgres/middleware"
+	"go-postgres/go-postgres/middleware"
 	"github.com/gorilla/mux"
 )
 

@@ -5,19 +5,18 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"go-postgres/models"
+	"go-postgres/go-postgres/models"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	
 	"github.com/gorilla/mux"
-	"github.com/lib/pq"
 )
 
 type response struct {
 	ID int64 `json:"id,omitempty"`
-	Message string `json"message,omitempty"`
+	Message string `json:"message,omitempty"`
 }
 
 
@@ -48,14 +47,14 @@ func creatConnection() *sql.DB {
 
 // CreateUser create a user in database
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
-	w.Header.Set("Access-Control-Allow-Origin", "*")
-	w.Header.Set("Access-Control-Allow-Methods", "POST")
-	w.Header.Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "POST")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var user models.User
 
-	err := json.NewDecoder(r.body).Decode(&user)
+	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		log.Fatalf("Unable to decode request body. %v", err)
@@ -73,19 +72,19 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 // GetUser will return a single user by id
 func GetUser(w http.ResponseWriter,  r *http.Request) {
-	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
-	w.Header.Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Context-type", "applicatopn/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	params := mux.Vars(r)
 
-	id, err := strconv(params["id"])
+	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		log.Fatalf("unable to convert the string into int. %v", err)
 	}
 
 	user, err := getUser(int64(id))
 
-	if err != null {
+	if err != nil {
 		log.Fatalf("Unable to get user. %v", err)
 	}
 
@@ -100,7 +99,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := getAllUsers()
 
 	if err != nil {
-		log.Fataf("Unable to get all users %v", err)
+		log.Fatalf("Unable to get all users %v", err)
 	}
 	
 	json.NewEncoder(w).Encode(users)
@@ -108,10 +107,10 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 // UpdateUser update user's detail in database
 func UpdateUser(w http.ResponseWriter, r *http.Request) {	
-	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
-	w.Header.Set("Access-Control-Allow-Origin", "*")
-	w.Header.Set("Access-Control-Allow-Methods", "PUT")
-	w.Header.Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Context-type", "applicatopn/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	params := mux.Vars(r)
 
@@ -123,7 +122,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	err = json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		log.Fatalf("Unable to decode the request body. %v", err)
@@ -144,10 +143,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 // DeleteUser delete user from the database
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	w.Header.Set("Context-type", "applicatopn/x-www-form-urlencoded")
-	w.Header.Set("Access-Control-Allow-Origin", "*")
-	w.Header.Set("Access-Control-Allow-Methods", "PUT")
-	w.Header.Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Context-type", "applicatopn/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	params := mux.Vars(r)
 
@@ -182,7 +181,7 @@ func insertUser(user models.User) int64 {
 
 	var id int64
 
-	err := db.Query.Row(sqlQuery, user.Name, user.Location, user.Age).Scan(&id)
+	err := db.QueryRow(sqlQuery, user.Name, user.Location, user.Age).Scan(&id)
 
 	if err != nil {
 		log.Fatalf("Unable to execute the query %v", err)

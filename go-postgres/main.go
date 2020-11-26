@@ -1,14 +1,14 @@
 package main
 
 import (
-	"go-postgres/router"
+	"go-postgres/go-postgres/router"
 	"fmt"
 	"log"
 	"net/http"
 )
 
 func main() {
-	r := router.Router
+	r := router.Router()
 
 	fmt.Println("Server started on port 8080:")
 
