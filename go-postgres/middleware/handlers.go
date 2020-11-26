@@ -46,6 +46,11 @@ func creatConnection() *sql.DB {
 	return db
 }
 
+//HelloServer shows API is up and running
+func HelloServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+}
+
 // CreateUser create a user in database
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
