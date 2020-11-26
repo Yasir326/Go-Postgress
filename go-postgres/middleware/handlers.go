@@ -12,6 +12,7 @@ import (
 	"strconv"
 	
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq" //postgres golang driver
 )
 
 type response struct {
